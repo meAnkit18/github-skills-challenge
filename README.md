@@ -38,6 +38,20 @@ Unusual is 2 records:
 
 So basically everything fine except that 2-minute spike where response time and resource use jump and errors show up.
 
+### My notes - Part 3 Task 3
+
+Ran it with `PYTHONPATH=src python3 src/aiops_pipeline.py`. Had to fix two small bugs first or it didn't work right - detector was checking for WARNING instead of ERROR, and producer/consumer were using two different topic objects so consumed was always 0. Now they share one `anomaly-events` topic. Didn't change the overall design, just those lines.
+
+Result now: 10 processed, 2 anomalies detected, 2 consumed. Output lists service, timestamp, type and reasons, so you can see why each was flagged.
+
+Detected:
+- 10:05 - 610ms + ERROR "Payment service timeout" -> flagged High response time, Error log
+- 10:06 - 640ms, CPU 94%, mem 91% + ERROR "DB connection timeout" -> flagged all four reasons
+
+No miss - both ERROR spikes caught. No false alarm either - all 8 normal INFO records (120-150ms) left alone. Checked with `pytest` too, 8 passed.
+
+One limitation: thresholds are fixed (500ms, 80%, 80%), so a slow drift like 400ms every time would never flag. Would be better with dynamic baselines or looking at trends.
+
 ---
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
