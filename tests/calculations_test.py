@@ -88,3 +88,5 @@ def test_get_nth_fibonacci_negative():
     # Act & Assert
     with pytest.raises(ValueError):
         get_nth_fibonacci(n)
+
+# step-3 demo: no code change, verify CI on PR
