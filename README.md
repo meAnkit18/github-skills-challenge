@@ -96,6 +96,16 @@ This README already covers 1-8 above (scenario in Task 1, data in Task 2, observ
 
 No screenshots, all written out as asked.
 
+### My notes - Part 6 Task 8
+
+Validation run just now, all green:
+- `pytest --verbose` -> 8 passed (same as CI `python-package.yml`)
+- `pytest --cov=src` -> 8 passed, ~60% total (CI `python-coverage.yml` will flag below-90 gate until Step 4 tests are added, that's expected)
+- workflow YAML parses OK, both have required keyphrases (`pytest`, `pytest --cov=src`)
+- AIOps checks: data processes (10), detection ok (normal=None, ERROR=flagged), 2 events made, 2 move through topic, consumer reads reasons, pipeline completes.
+
+No failures to fix.
+
 ---
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
