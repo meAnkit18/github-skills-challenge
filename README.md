@@ -52,6 +52,20 @@ No miss - both ERROR spikes caught. No false alarm either - all 8 normal INFO re
 
 One limitation: thresholds are fixed (500ms, 80%, 80%), so a slow drift like 400ms every time would never flag. Would be better with dynamic baselines or looking at trends.
 
+### My notes - Part 3 Task 4
+
+Checked the event flow step by step - all 6 pass:
+1. detect makes an event (10:06 gives ANOMALY with 4 reasons)
+2. that event goes to producer
+3. producer publishes to `anomaly-events` topic (count goes 0->1)
+4. consumer reads from same topic (gets 1 back)
+5. consumer processes it (service/timestamp/reasons intact)
+6. full `run_pipeline` gives 10 processed, 2 detected, 2 consumed - so it reaches the end.
+
+Roles as I see it: Event/message is the dict with service/timestamp/type/reasons, Producer (`event_producer.py`) just publishes it, Topic (`event_topic.py`) is the in-memory list holding them, Consumer (`event_consumer.py`) reads them back for the AIOps output in `aiops_pipeline.py`.
+
+Execution: `PYTHONPATH=src python3 src/aiops_pipeline.py` -> Records 10, Anomalies 2 (10:05, 10:06), Consumed 2. Same as Task 3.
+
 ---
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
