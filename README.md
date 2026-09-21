@@ -76,6 +76,14 @@ Found 2 real bugs that broke the flow, both within the existing design:
 
 No new architecture, just those lines. Also added `pytest.ini` so `pytest` works in CI for both import styles.
 
+### My notes - Part 4 Task 6
+
+Final end-to-end run with `PYTHONPATH=src python3 src/aiops_pipeline.py`:
+
+Operational Data (10 records) -> Anomaly Detection (2 flagged) -> Event (ANOMALY dict) -> Producer (publish) -> Topic (`anomaly-events`) -> Consumer (consume) -> AIOps Output (printed list).
+
+Result: Records 10, Detected 2, Consumed 2. All 7 checks pass - data processed, anomalies found (10:05 timeout, 10:06 DB timeout), events made, published, consumed, processed with service/timestamp/reasons intact, and output clearly shows the payment-service issue.
+
 ---
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
