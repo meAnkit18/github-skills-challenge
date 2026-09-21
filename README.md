@@ -84,6 +84,18 @@ Operational Data (10 records) -> Anomaly Detection (2 flagged) -> Event (ANOMALY
 
 Result: Records 10, Detected 2, Consumed 2. All 7 checks pass - data processed, anomalies found (10:05 timeout, 10:06 DB timeout), events made, published, consumed, processed with service/timestamp/reasons intact, and output clearly shows the payment-service issue.
 
+### My notes - Part 5 Task 7
+
+This README already covers 1-8 above (scenario in Task 1, data in Task 2, observations in Task 2, findings in Task 3, flow in Task 4, final result in Task 6, fixes in Task 5, limitation in Task 3). Adding the reproduce steps here:
+
+1. Open my fork codespace, no extra infra needed.
+2. Install deps: `pip install -r requirements.txt` (plus `pytest`, `coverage` if you want CI checks).
+3. Run pipeline: `PYTHONPATH=src python3 src/aiops_pipeline.py` - expect 10 / 2 / 2.
+4. Run tests: `pytest --verbose` - expect 8 passed. Coverage version: `pytest --cov=src`.
+5. Workflows run on push/PR via `.github/workflows/python-package.yml` and `python-coverage.yml`.
+
+No screenshots, all written out as asked.
+
 ---
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
