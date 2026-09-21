@@ -66,6 +66,16 @@ Roles as I see it: Event/message is the dict with service/timestamp/type/reasons
 
 Execution: `PYTHONPATH=src python3 src/aiops_pipeline.py` -> Records 10, Anomalies 2 (10:05, 10:06), Consumed 2. Same as Task 3.
 
+### My notes - Part 4 Task 5
+
+Found 2 real bugs that broke the flow, both within the existing design:
+
+1. Detector missed ERROR logs - component `src/anomaly_detector.py:27`. Cause: it checked `log_level == "WARNING"` but data only has INFO/ERROR. Fix: changed to `"ERROR"`. Re-ran detector on 10:05 record - before it gave only [High response time], now gives [High response time, Error log detected]. Verified fixed.
+
+2. Events never reached consumer - component `src/aiops_pipeline.py:17-22`. Cause: producer used `EventTopic("service-events")` and consumer used a separate `EventTopic("anomaly-events")` object, so consume always returned 0. Fix: both now share one `EventTopic("anomaly-events")`. Re-ran pipeline - before 2 detected / 0 consumed, now 2 detected / 2 consumed. Verified fixed.
+
+No new architecture, just those lines. Also added `pytest.ini` so `pytest` works in CI for both import styles.
+
 ---
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
