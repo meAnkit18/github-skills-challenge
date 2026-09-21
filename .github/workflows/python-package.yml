@@ -33,3 +33,4 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --verbose
+# retrigger Step 2 now that exercise issue exists
